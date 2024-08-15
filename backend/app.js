@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 const booksRoutes = require("./routes/books.js");
+const userRoutes = require("./routes/user.js");
 
 async function connectMongo() {
   await mongoose
@@ -32,5 +33,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 app.use("/api/books", booksRoutes);
+app.use("/api/auth", userRoutes);
 
 module.exports = app;
