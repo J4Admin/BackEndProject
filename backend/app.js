@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const booksRoutes = require("./routes/books.js");
 const userRoutes = require("./routes/user.js");
+const booksRatingRoutes = require("./routes/booksRating.js");
 
 mongoose
   .connect(
@@ -14,6 +15,7 @@ mongoose
   .catch((e) => console.log(e));
 
 const app = express();
+
 app.use(
   cors({
     origin: "*",
@@ -24,6 +26,7 @@ app.use(
 );
 
 app.use(bodyParser.json());
+app.use("/api", booksRatingRoutes);
 app.use("/api/books", booksRoutes);
 app.use("/api/auth", userRoutes);
 app.use("/images", express.static(path.join(__dirname, "images")));
