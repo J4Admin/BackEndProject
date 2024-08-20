@@ -15,11 +15,17 @@ const generateToken = (userId) => {
 };
 
 exports.signup = (req, res, next) => {
+  const { password, email } = req.body;
+  if (!password || password.trim().length === 0) {
+    return res
+      .status(400)
+      .json({ error: "Le champ mot de passe ne peut pas être vide" });
+  }
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
       const user = new User({
-        email: req.body.email,
+        email: email,
         password: hash,
       });
 

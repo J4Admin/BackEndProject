@@ -12,12 +12,20 @@ const sharpImage = async (req, res, next) => {
     );
     try {
       await sharp(inputPath).toFormat("webp").toFile(outputPath);
+
       fs.unlink(inputPath, (err) => {
-        if (err) console.error("error lors de la suppression de l'image", err);
+        if (err) {
+          console.error("error lors de la suppression de l'image", err);
+          return res.status(500).json({
+            error: "Erreur lors de la suppression de l'image originale",
+          });
+        }
       });
+
       req.file.filename = `converted_${req.file.filename}.webp`;
       next();
     } catch (error) {
+      console.error("Erreur lors de la conversion de l'image :", error);
       res
         .status(500)
         .json({ error: "Erreur lors de la conversion de l'image" });
