@@ -1,6 +1,6 @@
 const Book = require("../models/Book");
 
-exports.addRating = (req, res) => {
+exports.postRating = (req, res) => {
   const userId = req.auth.userId;
   const bookId = req.params.id;
   const grade = req.body.rating;
@@ -41,4 +41,12 @@ exports.addRating = (req, res) => {
         .status(500)
         .json({ message: "Erreur lors de la notation du livre", error });
     });
+};
+
+exports.getBestRating = (req, res) => {
+  Book.find()
+    .sort({ averageRating: -1 })
+    .limit(3)
+    .then((books) => res.status(200).json(books))
+    .catch((error) => res.status(400).json({ error }));
 };
